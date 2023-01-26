@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork.BLL.Models
 {
-    internal class AddFrendData
+    public class Friend
     {
+        public int id { get; set; }
+        public int user_id { get; set; }
+        public int frend_id { get; set; }
     }
 }
