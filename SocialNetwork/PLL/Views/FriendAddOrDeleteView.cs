@@ -31,7 +31,6 @@ namespace SocialNetwork.PLL.Views
 
         public void Show(User user)
         {
-            var addFriendData = new AddOrDeleteFriendData();
             var Friend = new Friend();
 
             Console.WriteLine("Добро пожаловать на вкладку взаимодействия с друзьями! \n" +
@@ -44,8 +43,8 @@ namespace SocialNetwork.PLL.Views
             {
                 case "1":
 
-                    Console.WriteLine("Введите имейл друга, которого хотите добавить");
-                    addFriendData.RecipientEmail = Console.ReadLine();
+                    Console.WriteLine("Введите Id друга, которого хотите добавить");
+                    Friend.frend_id = int.Parse(Console.ReadLine());
 
                     try
                     {
