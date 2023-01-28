@@ -43,16 +43,18 @@ namespace SocialNetwork.PLL.Views
             {
                 case "1":
 
-                    Console.WriteLine("Введите Id друга, которого хотите добавить");
-                    Friend.frend_id = int.Parse(Console.ReadLine());
-
+                    Console.WriteLine("Введите имейл друга, которого хотите добавить");
+                    user.Email = Console.ReadLine();                   
                     try
                     {
-                        FriendService.Create(Friend);
+                        if (user.Email != null)
+                        {
+                            FriendService.Create(new Friend());
+                            user = UserService.FindById(Friend.frend_id);
+                            user = UserService.FindByEmail(user.Email);
+                            SuccessMessage.Show($"{user.Email} добавлен в ваши друзья");
 
-                        SuccessMessage.Show($"{Friend.frend_id} добавлен в ваши друзья");
-
-                        user = UserService.FindById(Friend.frend_id);
+                        }
                     }
                     catch (UserNotFoundException)
                     {
