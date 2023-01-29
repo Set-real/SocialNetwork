@@ -2,60 +2,45 @@
 using SocialNetwork.BLL.Models;
 using SocialNetwork.DAL.Entities;
 using SocialNetwork.DAL.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
 
 namespace SocialNetwork.BLL.Services
 {
     public class FriendService
     {
-        IFriendRepository FriendRepository;
-        UserRepository UserRepository;
+        IFriendRepository friendRepository;
+        UserRepository userRepository;
+        MessageRepository messageRepository;
         public FriendService()
         {
-            FriendRepository = new FriendRepository();
-            UserRepository = new UserRepository();
+            friendRepository = new FriendRepository();
+            userRepository = new UserRepository();
+            messageRepository = new MessageRepository();
         }
-        public void Create(Friend friend)
+
+        public AddFriendData FindByEmail(string email)
+        {
+            var findUserEntity = userRepository.FindByEmail(email);
+            if (findUserEntity is null)
+                throw new UserNotFoundException();
+
+            return new AddFriendData();
+        }
+
+        public void AddFriend(Friend friend)
         {
             if (friend.frend_id == 0)
-                throw new ArgumentNullException(friend.ToString());
+                throw new UserNotFoundException();
+            if (friend.user_id == 0)
+                throw new UserNotFoundException();
 
             var friendEntity = new FriendEntity()
             {
                 friend_id = friend.frend_id,
+                user_id = friend.user_id
             };
 
-            if (FriendRepository.Create(friendEntity) == 0)
+            if (friendEntity == null)
                 throw new Exception();
-        }
-        public void Delete(Friend friend)
-        {
-            if (friend.frend_id == 0)
-                throw new ArgumentNullException(nameof(friend));
-            var friendEntity = new FriendEntity()
-            {
-                friend_id = friend.frend_id,
-            };
-
-            FriendRepository.Delete(friend.frend_id);
-        }
-        public IEnumerable<Friend> GetFriends(int userId)
-        {
-            var friends = new List<Friend>();
-
-            FriendRepository.FindAllByUserId(userId).ToList().ForEach(m =>
-            {
-                var user_id = UserRepository.FindById(m.user_id);
-                var friend_id = UserRepository.FindById(m.friend_id);
-
-                friends.Add(new Friend());
-            }); 
-            
-            return friends;
         }
     }
 }
