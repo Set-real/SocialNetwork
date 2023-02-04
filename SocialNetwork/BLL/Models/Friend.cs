@@ -11,12 +11,11 @@ namespace SocialNetwork.BLL.Models
         public int id { get; set; }
         public int user_id { get; set; }
         public int frend_id { get; set; }
+        public string friend_email { get; set; }
 
-        public Friend(int id, int user_id, int frend_id)
-        {
-            this.id = id;
-            this.user_id = user_id;
-            this.frend_id = frend_id;
-        }
+        public Friend(string friend_email) => this.friend_email = friend_email;
+
+
+
     }
 }

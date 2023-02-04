@@ -13,32 +13,34 @@ namespace SocialNetwork.PLL.Views
     /// <summary>
     /// Бизнес-логика для добавления в друзья
     /// </summary>
-    public class FriendAddOrDeleteView
+    public class FriendView
     {
-        UserService UserService;
-        FriendService FriendService;
-        public FriendAddOrDeleteView(UserService userService, FriendService friendService)
+        UserService userService;
+        FriendService friendService;
+        public FriendView()
         {
-            UserService = userService;
-            FriendService = friendService;
+            userService= new UserService();
+            friendService= new FriendService();
         }
         public void Show(User user)
         {
             Console.WriteLine("Добро пожаловать на вкладку взаимодействия с друзьями! \n" +
                 "Если вы хотите добавить друга нажмите 1 \n");
 
+            friendService.GetFriends(user.Id);
+
             var resalt = Console.ReadLine();
 
             switch (resalt)
             {
                 case "1":
-                    AddFriendData addFriendData = new AddFriendData();
                     Console.WriteLine("Введите Email друга, которого хотите добавить");
-                    addFriendData.FriendEmail = Console.ReadLine();
+                    string email = Console.ReadLine();
 
                     try
                     {
-                        SuccessMessage.Show($"{addFriendData.FriendEmail} добавлен в ваши друзья");
+                        friendService.AddFriend(email);
+                        SuccessMessage.Show($"{email} добавлен в ваши друзья");
                     }
                     catch (UserNotFoundException)
                     {
